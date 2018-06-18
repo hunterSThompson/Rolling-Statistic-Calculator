@@ -1,0 +1,7 @@
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\obj\Debug\VersiveProject.csprojResolveAssemblyReference.cache
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\obj\Debug\VersiveProject.csproj.CoreCompileInputs.cache
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\bin\Debug\VersiveProject.exe.config
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\bin\Debug\VersiveProject.exe
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\bin\Debug\VersiveProject.pdb
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\obj\Debug\VersiveProject.exe
+c:\users\hgraham\source\repos\VersiveProject\VersiveProject\obj\Debug\VersiveProject.pdb
