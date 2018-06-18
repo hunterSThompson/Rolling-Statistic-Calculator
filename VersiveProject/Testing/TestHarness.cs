@@ -63,32 +63,36 @@ namespace VersiveProject.Testing
             Console.WriteLine($"Average update time: {average} micro seconds");
         }
 
+        void CheckValue(double target, double actual, string name, int start, int end)
+        {
+            if (target != actual)
+            {
+                Console.WriteLine($"From {start} to {end} {name} should be {target} but is {actual}");
+            }
+        }
+
         void CheckResult(int frameSize, int i, double[] stream, Statistics result)
         {
             // Select the correct portion of the list...
             int start = i < frameSize ? 0 : i - frameSize + 1;
             int count = i < frameSize ? i + 1 : frameSize;
+            int end = start + count;
             var chunk = stream.ToList().GetRange(start, count);
             chunk.Sort();
 
             // Calculate mean/max/median
-            var mean = chunk.Sum() / chunk.Count;
-            var max = chunk.Max();
-            var median = chunk[chunk.Count % 2 == 0 ? (chunk.Count / 2) - 1 : chunk.Count / 2];
+            double mean = 0.0, max = 0.0, median = 0.0;
+            if (i >= frameSize - 1)
+            {
+                mean = chunk.Sum() / chunk.Count;
+                max = chunk.Max();
+                median = chunk[chunk.Count % 2 == 0 ? (chunk.Count / 2) - 1 : chunk.Count / 2];
+            }
 
-            // Now check it...
-            if (result.mean != mean)
-            {
-                Console.WriteLine($"From {start} to {start + count} mean should be {mean} but is {result.mean}");
-            }
-            if (result.median != median)
-            {
-                Console.WriteLine($"From {start} to {start + count} median should be {median} but is {result.median}");
-            }
-            if (result.max != max)
-            {
-                Console.WriteLine($"From {start} to {start + count} max should be {max} but is {result.max}");
-            }
+            // Check each values.
+            CheckValue(result.mean, mean, "mean", start, end);
+            CheckValue(result.median, median, "median", start, end);
+            CheckValue(result.max, max, "max", start, end);
         }
     }
 }

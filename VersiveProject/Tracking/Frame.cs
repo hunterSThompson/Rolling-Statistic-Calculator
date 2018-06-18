@@ -35,6 +35,16 @@ namespace VersiveProject
             _medianMaxTracker.Add(newValue, oldValue);
 
             // Read & save the new max, mean, and median values
-            _mean = _meanTracker.Mean;
-            _max = _medianMaxTracker.Max;            _median = _medianMaxTracker.Median;        }    }
+            if (_queue.Count < _size)
+            {
+                _mean = 0.0;
+                _max = 0.0;
+                _median = 0.0;
+            }
+            else
+            {
+                _mean = _meanTracker.Mean;
+                _max = _medianMaxTracker.Max;
+                _median = _medianMaxTracker.Median;
+            }        }    }
 }
