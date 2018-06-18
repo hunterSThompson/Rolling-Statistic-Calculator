@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,72 +11,32 @@ namespace VersiveProject
     {
         static void Main(string[] args)
         {
-            /*
-            var stream = new InputStreamStub();
-            var generator = new MyStatsGen(8, 11, stream);
-
-            var testHarness = new TestHarness(stream, generator, 8, 11);
-            testHarness.Run();
-
-            var randomStream = new RandomInputStream(150, -100, 280);
-            var generator2 = new MyStatsGen(10, 15, randomStream);
-            */
-
-            var randomStream = new RandomInputStream(150, -20, 20);
-            var generator2 = new MyStatsGen(10, 5, randomStream);
-            var testHarness2 = new TestHarness(randomStream, generator2, 10, 5);
-            testHarness2.Run();
+            Test(100, -2000, 2000, 10, 10);
+            Test(1000, -2000, 2000, 100, 10);
+            Test(10000, -2000, 2000, 1000, 10);
+            Test(100000, -2000, 2000, 10000, 10);
+            Test(1000000, -2000, 2000, 100000, 10);
+            Test(5000000, -2000, 2000, 1000000, 10);
 
             Console.WriteLine("Complete!");
-
-            /*
-            // Run the generator and verify results.
-            int i = 0;
-            while (generator.hasNext())
-            {
-                var results = generator.getNext();
-                var res1 = results[0];
-                var res2 = results[1];
-
-                CheckResult(3, i, stream.lst, res1);
-                CheckResult(5, i, stream.lst, res2);
-
-                i++;
-            }
-            */
-
             Console.ReadKey();
         }
 
-        /*
-        static void CheckResult(int frameSize, int i, double[] stream, Statistics result)
+        static void Test(int size, int min, int max, int windowSize1, int windowSize2)
         {
-            // Select the correct portion of the list...
-            int start = i < frameSize ? 0 : i - frameSize + 1;
-            int count = i < frameSize ? i + 1 : frameSize;
-            var chunk = stream.ToList().GetRange(start, count);
-            chunk.Sort();
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            // Calculate mean/max/median
-            var mean = chunk.Sum() / chunk.Count;
-            var max = chunk.Max();
-            var median = chunk[chunk.Count % 2 == 0 ? (chunk.Count / 2) - 1 : chunk.Count / 2];
+            Console.WriteLine($"Beginning test with {size} elements from {min} to {max}, with window sizes of {windowSize1} and {windowSize2}");
 
-            // Now check it...
-            if (result.mean != mean)
-            {
-                Console.WriteLine($"From {start} to {start + count} mean should be {mean} but is {result.mean}");
-            }
-            if (result.median != median)
-            {
-                Console.WriteLine($"From {start} to {start + count} median should be {median} but is {result.median}");
-            }
-            if (result.max != max)
-            {
-                Console.WriteLine($"From {start} to {start + count} max should be {max} but is {result.max}");
-            }
+            var randomStream = new RandomInputStream(size, min, max);
+            var generator = new MyStatsGen(windowSize1, windowSize2, randomStream);
+            var testHarness = new TestHarness(randomStream, generator, windowSize1, windowSize2);
+            testHarness.Run(checkResults: false, printProgress: false);
+
+            var time = stopwatch.Elapsed;
+            Console.WriteLine($"Compeleted in {time.TotalSeconds} seconds\n");
         }
-        */
     }
 
     interface CheckableStream : InputStream
@@ -97,21 +58,42 @@ namespace VersiveProject
             _frameSize2 = frameSize2;
         }
 
-        public void Run()
+        public void Run(bool checkResults, bool printProgress)
         {
-            // Run the generator and verify results.
             int i = 0;
+
+            var executionTimes = new List<long>();
+
             while (_generator.hasNext())
             {
+                var sw = new Stopwatch();
+                sw.Start();
+
                 var results = _generator.getNext();
                 var res1 = results[0];
                 var res2 = results[1];
 
-                CheckResult(_frameSize1, i, _stream.getValues().ToArray(), res1);
-                CheckResult(_frameSize2, i, _stream.getValues().ToArray(), res2);
+                sw.Stop();
+                long microseconds = sw.ElapsedTicks / TimeSpan.TicksPerMillisecond;
+                executionTimes.Add(microseconds);
+
+                if (checkResults)
+                {
+                    CheckResult(_frameSize1, i, _stream.getValues().ToArray(), res1);
+                    CheckResult(_frameSize2, i, _stream.getValues().ToArray(), res2);
+                }
+
+
+                if (printProgress && i % 1000 == 0)
+                {
+                    Console.WriteLine($"Progress: {i} elements processed");
+                }
 
                 i++;
             }
+
+            var average = executionTimes.Average();
+            Console.WriteLine($"Average update time: {average} micro seconds");
         }
 
         void CheckResult(int frameSize, int i, double[] stream, Statistics result)
