@@ -56,7 +56,6 @@
     <Compile Include="Testing\ICheckableStream.cs" />
     <Compile Include="Testing\RandomInputStream.cs" />
     <Compile Include="Testing\TestHarness.cs" />
-    <Compile Include="Tracking\TrackingQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
