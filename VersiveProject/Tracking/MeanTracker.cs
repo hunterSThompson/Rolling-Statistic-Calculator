@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VersiveProject
 {
+    /// <summary>
+    /// Maintains the mean value in a frame of data.
+    /// </summary>
     class MeanTracker
     {
         double _sum = 0;

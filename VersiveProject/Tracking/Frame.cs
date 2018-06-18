@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VersiveProject
 {
+    /// <summary>
+    /// Tracks a frame of data and maintains the median/max/mean.
+    /// </summary>
     public class Frame
     {
         int _size;

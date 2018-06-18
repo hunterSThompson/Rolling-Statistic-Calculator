@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VersiveProject
 {
+    /// <summary>
+    /// Maintains the median in a frame of data using 2 Red-Black trees.
+    /// </summary>
     class MedianMaxTracker
     {
         RbTree lower = new RbTree();

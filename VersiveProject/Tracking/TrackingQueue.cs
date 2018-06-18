@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VersiveProject
 {
+    /// <summary>
+    /// Not actually used.  A different way to track the max. Costant runtime, but O(n) extra memory.
+    /// </summary>
     public class TrackingQueue
     {
         private Queue<double> _queue = new Queue<double>();

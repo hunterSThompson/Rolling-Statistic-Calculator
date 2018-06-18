@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace VersiveProject
 {
+    /// <summary>
+    /// Wrapper class to emulate a Red-Black tree with duplicates in C#
+    /// </summary>
     public class RbTree
     {
         SortedSet<double> set;

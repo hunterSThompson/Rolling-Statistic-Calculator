@@ -42,17 +42,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Frame.cs" />
+    <Compile Include="Tracking\Frame.cs" />
     <Compile Include="InputStream.cs" />
-    <Compile Include="MedianTracker.cs" />
-    <Compile Include="RbTree.cs" />
+    <Compile Include="Tracking\MedianTracker.cs" />
+    <Compile Include="Tracking\RbTree.cs" />
     <Compile Include="MyStatsGen.cs" />
     <Compile Include="StatisticsGenerator.cs" />
-    <Compile Include="MeanTracker.cs" />
+    <Compile Include="Tracking\MeanTracker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistics.cs" />
-    <Compile Include="TrackingQueue.cs" />
+    <Compile Include="Testing\InputStreamStub.cs" />
+    <Compile Include="Testing\ICheckableStream.cs" />
+    <Compile Include="Testing\RandomInputStream.cs" />
+    <Compile Include="Testing\TestHarness.cs" />
+    <Compile Include="Tracking\TrackingQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
